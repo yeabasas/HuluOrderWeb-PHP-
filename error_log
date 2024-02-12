@@ -1,0 +1,52 @@
+[28-Nov-2023 17:53:31 UTC] PHP Notice:  Undefined index: unit in /home/huluorop/public_html/login.php on line 10
+[28-Nov-2023 17:54:26 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/huluorop/public_html/dbcon.php:8) in /home/huluorop/public_html/login.php on line 29
+[28-Nov-2023 18:04:20 UTC] PHP Notice:  Undefined variable: error_message in /home/huluorop/public_html/login.php on line 47
+[06-Dec-2023 16:59:57 UTC] PHP Warning:  file_get_contents(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /home/huluorop/public_html/send_message.php on line 31
+[06-Dec-2023 16:59:57 UTC] PHP Warning:  file_get_contents(https://api.telegram.org/bot6884877842:AAE28Rs_EyFTzkaFVlLWJf0PHv6a0cnPKbQ/sendMessage): failed to open stream: no suitable wrapper could be found in /home/huluorop/public_html/send_message.php on line 31
+[06-Dec-2023 17:07:53 UTC] PHP Warning:  file_get_contents(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /home/huluorop/public_html/send_message.php on line 31
+[06-Dec-2023 17:07:53 UTC] PHP Warning:  file_get_contents(https://api.telegram.org/bot6884877842:AAE28Rs_EyFTzkaFVlLWJf0PHv6a0cnPKbQ/sendMessage): failed to open stream: no suitable wrapper could be found in /home/huluorop/public_html/send_message.php on line 31
+[06-Dec-2023 17:07:53 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/huluorop/public_html/send_message.php:39
+Stack trace:
+#0 {main}
+  thrown in /home/huluorop/public_html/send_message.php on line 39
+[06-Dec-2023 17:09:44 UTC] PHP Warning:  file_get_contents(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /home/huluorop/public_html/send_message.php on line 31
+[06-Dec-2023 17:09:44 UTC] PHP Warning:  file_get_contents(https://api.telegram.org/bot6884877842:AAE28Rs_EyFTzkaFVlLWJf0PHv6a0cnPKbQ/sendMessage): failed to open stream: no suitable wrapper could be found in /home/huluorop/public_html/send_message.php on line 31
+[06-Dec-2023 17:09:44 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/huluorop/public_html/send_message.php:39
+Stack trace:
+#0 {main}
+  thrown in /home/huluorop/public_html/send_message.php on line 39
+[06-Dec-2023 17:20:06 UTC] PHP Warning:  file_get_contents(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /home/huluorop/public_html/send_message.php on line 31
+[06-Dec-2023 17:20:06 UTC] PHP Warning:  file_get_contents(https://api.telegram.org/bot6531167409:AAHtgqjmkqwyUbKIlMGGDbGK5PzSXgSc_to/sendMessage): failed to open stream: no suitable wrapper could be found in /home/huluorop/public_html/send_message.php on line 31
+[06-Dec-2023 17:20:06 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/huluorop/public_html/send_message.php:39
+Stack trace:
+#0 {main}
+  thrown in /home/huluorop/public_html/send_message.php on line 39
+[06-Dec-2023 17:43:04 UTC] PHP Warning:  file_get_contents(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /home/huluorop/public_html/send_message.php on line 31
+[06-Dec-2023 17:43:04 UTC] PHP Warning:  file_get_contents(https://api.telegram.org/bot6531167409:AAHtgqjmkqwyUbKIlMGGDbGK5PzSXgSc_to/sendMessage): failed to open stream: no suitable wrapper could be found in /home/huluorop/public_html/send_message.php on line 31
+[06-Dec-2023 17:43:04 UTC] PHP Fatal error:  Uncaught Error: Call to a member function close() on null in /home/huluorop/public_html/send_message.php:39
+Stack trace:
+#0 {main}
+  thrown in /home/huluorop/public_html/send_message.php on line 39
+[06-Dec-2023 18:06:16 UTC] PHP Warning:  file_get_contents(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /home/huluorop/public_html/conn.php on line 14
+[06-Dec-2023 18:06:16 UTC] PHP Warning:  file_get_contents(https://...@https://t.me/yeabsupportbot): failed to open stream: no suitable wrapper could be found in /home/huluorop/public_html/conn.php on line 14
+[06-Dec-2023 18:09:55 UTC] PHP Warning:  file_get_contents(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /home/huluorop/public_html/send_message.php on line 31
+[06-Dec-2023 18:09:55 UTC] PHP Warning:  file_get_contents(https://api.telegram.org/bot6531167409:AAHtgqjmkqwyUbKIlMGGDbGK5PzSXgSc_to/sendMessage): failed to open stream: no suitable wrapper could be found in /home/huluorop/public_html/send_message.php on line 31
+[06-Dec-2023 18:12:51 UTC] PHP Warning:  file_get_contents(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /home/huluorop/public_html/send_message.php on line 33
+[06-Dec-2023 18:12:51 UTC] PHP Warning:  file_get_contents(https://api.telegram.org/bot6531167409:AAHtgqjmkqwyUbKIlMGGDbGK5PzSXgSc_to/sendMessage): failed to open stream: no suitable wrapper could be found in /home/huluorop/public_html/send_message.php on line 33
+[06-Dec-2023 18:40:59 UTC] PHP Warning:  file_get_contents(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /home/huluorop/public_html/send_message.php on line 33
+[06-Dec-2023 18:40:59 UTC] PHP Warning:  file_get_contents(https://api.telegram.org/bot6531167409:AAHtgqjmkqwyUbKIlMGGDbGK5PzSXgSc_to/sendMessage): failed to open stream: no suitable wrapper could be found in /home/huluorop/public_html/send_message.php on line 33
+[06-Dec-2023 18:42:14 UTC] PHP Warning:  file_get_contents(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /home/huluorop/public_html/send_message.php on line 33
+[06-Dec-2023 18:42:14 UTC] PHP Warning:  file_get_contents(https://api.telegram.org/bot6531167409:AAHtgqjmkqwyUbKIlMGGDbGK5PzSXgSc_to/sendMessage?): failed to open stream: no suitable wrapper could be found in /home/huluorop/public_html/send_message.php on line 33
+[06-Dec-2023 20:13:21 UTC] PHP Warning:  file_get_contents(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /home/huluorop/public_html/send_message.php on line 34
+[06-Dec-2023 20:13:21 UTC] PHP Warning:  file_get_contents(https://api.telegram.org/bot6531167409:AAHtgqjmkqwyUbKIlMGGDbGK5PzSXgSc_to/sendMessage?chat_id=377915937&amp;text=): failed to open stream: no suitable wrapper could be found in /home/huluorop/public_html/send_message.php on line 34
+[06-Dec-2023 20:15:33 UTC] PHP Warning:  file_get_contents(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /home/huluorop/public_html/send_message.php on line 34
+[06-Dec-2023 20:15:33 UTC] PHP Warning:  file_get_contents(https://api.telegram.org/bot6531167409:AAHtgqjmkqwyUbKIlMGGDbGK5PzSXgSc_to/sendMessage?chat_id=377915937&amp;text=New Support Message
+Phone Number: +251985813353
+Message: mnmnmn): failed to open stream: no suitable wrapper could be found in /home/huluorop/public_html/send_message.php on line 34
+[06-Dec-2023 20:16:02 UTC] PHP Warning:  file_get_contents(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /home/huluorop/public_html/send_message.php on line 34
+[06-Dec-2023 20:16:02 UTC] PHP Warning:  file_get_contents(https://api.telegram.org/bot6531167409:AAHtgqjmkqwyUbKIlMGGDbGK5PzSXgSc_to/sendMessage?chat_id=377915937&amp;text=New Support Message
+Phone Number: +251985813353
+Message: jkjkjkjkj): failed to open stream: no suitable wrapper could be found in /home/huluorop/public_html/send_message.php on line 34
+[07-Dec-2023 09:10:09 UTC] PHP Parse error:  syntax error, unexpected '150' (T_LNUMBER), expecting ',' or ';' in /home/huluorop/public_html/historyDetail.php on line 86
+[07-Dec-2023 09:10:21 UTC] PHP Parse error:  syntax error, unexpected '150' (T_LNUMBER), expecting ',' or ';' in /home/huluorop/public_html/historyDetail.php on line 86
+[07-Dec-2023 09:10:30 UTC] PHP Parse error:  syntax error, unexpected '150' (T_LNUMBER), expecting ',' or ';' in /home/huluorop/public_html/historyDetail.php on line 86

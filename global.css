@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  line-height: normal;
+}
+
+:root {
+  /* fonts */
+  --font-poppins: Poppins;
+  --font-corbel: Corbel;
+  --font-inter: Inter;
+  --font-rubik: Rubik;
+  /* font sizes */
+  --font-size-mini: 15px;
+  --font-size-xl: 20px;
+  /* Colors */
+  --color-white: #fff;
+
+  /* Border radiuses */
+  --br-3xs: 10px;
+}
