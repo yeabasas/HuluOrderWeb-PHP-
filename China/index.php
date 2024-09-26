@@ -27,7 +27,7 @@ if (strlen($_SESSION['mtid'] == 0)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style.css">
-    <link rel="shortcut icon" href="../images/Eo_circle_green_white_letter-h.svg.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../images/1122.png" type="image/x-icon">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->

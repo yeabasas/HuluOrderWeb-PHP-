@@ -1,0 +1,59 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.column {
+    flex-grow: 1;
+    width: calc(20% - 10px); /* 20% width for 5 columns, minus some padding */
+    padding: 10px;
+    box-sizing: border-box; /* Ensure padding is included in width calculations */
+}
+
+.item {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.item img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.item h3 {
+    margin: 0 0 10px;
+    font-size: 1.2em;
+}
+
+.item p {
+    margin: 5px 0;
+}
+
+@media (max-width: 1200px) {
+    .column {
+        width: calc(33.33% - 10px); /* 3 columns for smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .column {
+        width: calc(50% - 10px); /* 2 columns for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .column {
+        width: calc(100% - 10px); /* 1 column for smallest screens */
+    }
+}

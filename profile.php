@@ -66,6 +66,23 @@ if (strlen($_SESSION['mtid'] == 0)) {
             ?>
                 <div class="p-5">
                     <h3 class="text-center">Change Profile</h3>
+                    <?php
+                    $postId = $row['ID'];
+
+                    $sqlImages = "SELECT image_filename FROM user_images WHERE userId = ?";
+                    $stmtImages = mysqli_prepare($con, $sqlImages);
+                    mysqli_stmt_bind_param($stmtImages, "i", $postId);
+                    mysqli_stmt_execute($stmtImages);
+                    $resultImages = mysqli_stmt_get_result($stmtImages);
+                    if ($rowImage = mysqli_fetch_assoc($resultImages)) {
+                        $imageFilename = $rowImage['image_filename'];
+                        echo '
+                        <p>"' . $imageFilename . '"</p>
+                            <img src="../images/' . $imageFilename . '" alt="" height="70px" width="70px">
+                            ';
+                    }
+                    mysqli_stmt_close($stmtImages);
+                    ?>
                     <div style="padding-top: 30px;">
                         <label>First Name</label>
                         <input type="text" class="form-control" name="FirstName" value="<?php echo $row['FirstName']; ?>" required="true">

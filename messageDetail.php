@@ -68,14 +68,28 @@ if (strlen($_SESSION['mtid'] == 0)) {
                                 echo '
                             <a href="images/' . $imageFilename . '">
                                 
-                                    <img src="images/' . $imageFilename . '" alt="" height="40px" width="40px">
+                                    <img src="images/' . $imageFilename . '" alt="" height="90px" width="90px" style="background-color:black">
                                 
                             </a>
                             ';
                             }
                             mysqli_stmt_close($stmtImages);
                         ?>
-                            <p class="mx-2"><?php echo $fetch["ItemName"] ?></p>
+                            <?php
+                            $id = $_GET['uId'];
+                            $sql2 = "SELECT * FROM `user` WHERE ID=$id";
+                            $result2 = mysqli_query($con, $sql2);
+                            $num = mysqli_num_rows($result2);
+                            $cnt = 1;
+                            while ($fetched = mysqli_fetch_assoc($result2)) {
+
+                            ?>
+                                <div class="d-flex flex-col">
+                                    <p class="mx-2"><?php echo $fetched["FirstName"] ?></p>
+                                    <p class="mx-2"><?php echo $fetch["ItemName"] ?></p>
+                                </div>
+                            <?php
+                            } ?>
                     <?php }
                     } ?>
                 </div>
@@ -149,17 +163,17 @@ if (strlen($_SESSION['mtid'] == 0)) {
                         messageContainer.classList.add('sent-message-con');
                     } else if (message.receiver_id === senderId) {
                         // Message received by the logged-in user
-                        messageElement.textContent = `${message.sender_id}: ${message.message}`;
+                        messageElement.textContent = ` ${message.message}`;
                         messageElement.classList.add('received-message');
                         messageContainer.classList.add('received-message-con');
                     } else if (message.sender_id === otherUserId) {
                         // Message sent by the other user
-                        messageElement.textContent = `${message.sender_id}: ${message.message}`;
+                        messageElement.textContent = ` ${message.message}`;
                         messageElement.classList.add('other-sent-message');
                         messageContainer.classList.add('other-sent-message-con');
                     } else if (message.receiver_id === otherUserId) {
                         // Message received by the other user
-                        messageElement.textContent = `${message.sender_id}: ${message.message}`;
+                        messageElement.textContent = ` ${message.message}`;
                         messageElement.classList.add('other-received-message');
                         messageContainer.classList.add('other-received-message-con');
                     }

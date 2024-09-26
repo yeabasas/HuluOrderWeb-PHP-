@@ -19,15 +19,25 @@ if (strlen($_SESSION['mtid'] == 0)) {
 } else {
     if (isset($_POST['change'])) {
         $userId = $_SESSION['mtid'];
-        $currentPassword = $_POST['currentPassword'];
+        $currentPassword = mysqli_real_escape_string($con, $_POST['currentPassword']);
         $newPassword = $_POST['newPassword'];
-        $query1 = mysqli_query($con, "select * from user where ID='$userId' and   Password='$currentPassword'");
+
+        $query1 = mysqli_query($con, "select * from user where ID='$userId'");
         $row = mysqli_fetch_array($query1);
-        if ($row > 0) {
-            $ret = mysqli_query($con, "update user set Password='$newPassword' where ID='$userId'");
-            echo '<script>alert("Your password successfully changed.");</script>';
-        } else {
-            echo '<script>alert("Your current password is wrong.");</script>';
+
+        if ($row) {
+            $hashedPasswordFromDatabase = $row['Password'];
+
+            if (password_verify($currentPassword, $hashedPasswordFromDatabase)) {
+                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+                if ($row > 0) {
+                    $ret = mysqli_query($con, "update user set Password='$hashedPassword' where ID='$userId'");
+                    echo '<script>alert("Your password successfully changed.");</script>';
+                } else {
+                    echo '<script>alert("Your current password is wrong.");</script>';
+                }
+            }
         }
     }
 ?>

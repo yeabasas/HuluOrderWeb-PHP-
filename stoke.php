@@ -27,7 +27,7 @@ if (strlen($_SESSION['mtid'] == 0)) {
         <title>Stoke</title>
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="global.css">
-        <link rel="shortcut icon" href="./images/Eo_circle_green_white_letter-h.svg.png" type="image/x-icon">
+        <link rel="shortcut icon" href="./images/1122.png" type="image/x-icon">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />

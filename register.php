@@ -1,18 +1,28 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 session_start();
 error_reporting(0);
 include_once('dbcon.php');
 
-// Check if the login form is submitted
+// Include PHPMailer classes
+require 'vendor/autoload.php';
+
 if (isset($_POST['register'])) {
     $Fname = $_POST['FirstName'];
     $Lname = $_POST['LastName'];
+    $Email = $_POST['Email'];
     $Mob = $_POST['Phone'];
     $password = $_POST['Password'];
-    $role = 'user'; // Default role for user registration
+    $role = 'user';
 
     // Hash the password
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+    // Generate verification code
+    $verificationCode = rand(100000, 999999);
 
     // Check if the phone number already exists
     $checkQuery = "SELECT * FROM user WHERE Phone = ?";
@@ -25,20 +35,49 @@ if (isset($_POST['register'])) {
         $error_message = 'Phone number already exists. Please use a different phone number.';
     } else {
         // Insert the new user if the phone number doesn't exist
-        $insertQuery = "INSERT INTO user (FirstName, LastName, Phone, Password, Role) VALUES (?, ?, ?, ?, ?)";
+        $insertQuery = "INSERT INTO user (FirstName, LastName, Email, Phone, Password, Role, verificationCode, isVerified) VALUES (?, ?, ?, ?, ?, ?, ?, 0)";
         $insertStmt = mysqli_prepare($con, $insertQuery);
-
-        // Bind parameters
-        mysqli_stmt_bind_param($insertStmt, "sssss", $Fname, $Lname, $Mob, $hashedPassword, $role);
-
-        // Execute the statement
+        mysqli_stmt_bind_param($insertStmt, "ssssssi", $Fname, $Lname, $Email, $Mob, $hashedPassword, $role, $verificationCode);
         $result = mysqli_stmt_execute($insertStmt);
 
         if ($result) {
-            header('Location: login.php');
-            exit();
+            // Send verification email using PHPMailer
+            $mail = new PHPMailer(true);
+
+            try {
+                //Server settings
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com'; // Set the SMTP server to send through
+                $mail->SMTPAuth = true;
+                $mail->Username = 'huluorder@gmail.com'; // Replace with your Gmail address
+                $mail->Password = 'brqy wyuw kicf qrun'; // Replace with your Gmail app password
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
+                $mail->SMTPOptions = array(
+                    'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    )
+                );
+
+                //Recipients
+                $mail->setFrom('huluorder@gmail.com', 'Hulu Order'); // Sender info
+                $mail->addAddress($Email, $Fname . ' ' . $Lname); // Add recipient
+
+                // Content
+                $mail->isHTML(true); // Set email format to HTML
+                $mail->Subject = 'Email Verification';
+                $mail->Body = "Your verification code is: <b>$verificationCode</b>";
+
+                $mail->send();
+                $_SESSION['email'] = $Email;
+                header('Location: verifyAcc.php');
+                exit();
+            } catch (Exception $e) {
+                $error_message = "Error: Email could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            }
         } else {
-            // Handle the error
             $error_message = 'Error: ' . mysqli_stmt_error($insertStmt);
         }
 
@@ -58,7 +97,7 @@ if (isset($_POST['register'])) {
     <title>Hulu Order | login</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="./images/Eo_circle_green_white_letter-h.svg.png" type="image/x-icon">
+    <link rel="shortcut icon" href="./images/1122.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <!-- Font Awesome -->
@@ -86,11 +125,25 @@ if (isset($_POST['register'])) {
                     </div>
                 <?php endif; ?>
                 <form method="post" action="">
-                    <input class="form-control mb-2" type="text" placeholder="First Name" name="FirstName" required>
-                    <input class="form-control mb-2" type="text" placeholder="Last Name" name="LastName" required>
-                    <input class="form-control mb-2" type="text" placeholder="Phone" name="Phone" required>
-                    <input class="form-control mb-2" type="password" placeholder="Password" name="Password" required>
-                    <input class="form-control mb-2 text-white" style="background-color: #243B2E;" type="submit" value="Register" name="register">
+                    <div class="d-flex flex-row justify-content-between mb-2 ">
+                        <label class="file-input-label" id="fileInputLabel">
+                            <input class="file-input" type="file" name="ProfilePic" accept="image/*" onchange="displayImage(this)">
+                            <div class="file-circle">
+                                <span class="plus-sign">+</span>
+                                <img id="previewImage" src="" alt="Selected">
+                            </div>
+                        </label>
+                        <div class="d-flex flex-column w-75 align-self-end">
+                            <input class="form-control mb-2 w-100" type="text" placeholder="First Name" name="FirstName" required>
+                            <input class="form-control mb-2 w-100" type="text" placeholder="Last Name" name="LastName" required>
+                        </div>
+                    </div>
+                    <div>
+                        <input class="form-control mb-2" type="email" placeholder="Email" name="Email" required>
+                        <input class="form-control mb-2" type="text" placeholder="Phone" name="Phone" required>
+                        <input class="form-control mb-2" type="password" placeholder="Password" name="Password" required>
+                        <input class="form-control mb-2 text-white" style="background-color: #243B2E;" type="submit" value="Register" name="register">
+                    </div>
                 </form>
                 <p>Already have an account? <a href="login.php" style="text-decoration: none; color: #243B2E; font-size: medium">Login</a></p>
             </div>
@@ -126,6 +179,67 @@ if (isset($_POST['register'])) {
             </form>
         </div> -->
     </div>
+    <style>
+        .file-input-label {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .file-input {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+
+        .file-circle {
+            width: 90px;
+            height: 90px;
+            background-color: #ddd;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plus-sign {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: #333;
+        }
+
+        #previewImage {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+    </style>
+
+    <script>
+        function displayImage(input) {
+            var fileInput = input;
+            var previewImage = document.getElementById('previewImage');
+            var fileInputLabel = document.getElementById('fileInputLabel');
+
+            if (fileInput.files && fileInput.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                    fileInputLabel.style.background = 'none';
+                };
+
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+    </script>
 </body>
 <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields

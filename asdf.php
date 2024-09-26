@@ -14,32 +14,21 @@ if (isset($_SESSION['timeout'])) {
     }
     $_SESSION['timeout'] = time();
 }
-if (strlen($_SESSION['mtid'] == 0)) {
-    header('location:logout.php');
-} else {
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Two-Column Layout</title>
+    <link rel="stylesheet" href="./style1.css">
 </head>
 <body>
-    <div class="grid">
-<?php
-                $sql2 = "SELECT * FROM `stoke` ORDER BY DateModified DESC";
-                $result2 = mysqli_query($con, $sql2);
-                $cnt = 1;
-                while ($fetch = mysqli_fetch_assoc($result2)) {
-                ?>
-                    <div class="colms">
-                        <img src="images/<?php echo $fetch['Image'] ?>" alt="">
-                        <p class=""><?php echo $fetch['ItemName'] ?></p>
-                    </div>
-                    <?php }?>
-                </div>
-                </body>
-            </html>
-            <?php }?>
+    <div class="container">
+        <div class="column" id="left-column"></div>
+        <div class="column" id="right-column"></div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>

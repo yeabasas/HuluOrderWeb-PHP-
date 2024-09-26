@@ -19,51 +19,59 @@ if (strlen($_SESSION['mtid'] == 0)) {
 } else {
     $successful = '<script>alert("Item added successfully")</script>';
     $failed = '<script>alert("Error Uploading Item")</script>';
-    if (isset($_POST['phones'])) {
-        $userId = $_SESSION['mtid'];
-        $itemName = $_POST['ItemName'];
-        $condition = $_POST['Condition'];
-        $storage = $_POST['Storage'];
-        $processor = $_POST['Processor'];
-        $color = $_POST['Color'];
-        $ram = $_POST['Ram'];
-        $sim = $_POST['Sim'];
-        $description = $_POST['Description'];
+   
+if (isset($_POST['phones'])) {
+    $userId = $_SESSION['mtid'];
+    $itemName = $_POST['ItemName'];
+    $condition = $_POST['Condition'];
+    $storage = $_POST['Storage'];
+    $processor = $_POST['Processor'];
+    $color = $_POST['Color'];
+    $ram = $_POST['Ram'];
+    $sim = $_POST['Sim'];
+    $description = $_POST['Description'];
 
-        $filename = $_FILES["choosefile"]["name"];
-        $tempfile = $_FILES["choosefile"]["tmp_name"];
-        $folder = "images/" . $filename;
+    // Get the original filename
+    $originalFilename = $_FILES["choosefile"]["name"];
+    $tempfile = $_FILES["choosefile"]["tmp_name"];
 
-        // Check for required fields
-        if (empty($itemName) || empty($condition) || empty($storage) || empty($ram) || empty($sim) || empty($processor) || empty($color)) {
-            echo '<script>alert("Required fields are not filled");</script>';
+    // Generate a unique filename based on the original filename and timestamp
+    $timestamp = time();
+    $extension = pathinfo($originalFilename, PATHINFO_EXTENSION);
+    $filename = "file-" . $timestamp . "." . $extension;
+
+    $folder = "images/" . $filename;
+
+    // Check for required fields
+    if (empty($itemName) || empty($condition) || empty($storage) || empty($ram) || empty($sim) || empty($processor) || empty($color)) {
+        echo '<script>alert("Required fields are not filled");</script>';
+    } else {
+        // Move the uploaded file to the destination directory
+        if (move_uploaded_file($tempfile, $folder)) {
+            // Use prepared statements to prevent SQL injection
+            $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Condition`, `Storage`, `Ram`, `Sim`, `Description`,`Processor`,`Color`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($con, $sql);
+
+            // Bind parameters
+            mysqli_stmt_bind_param($stmt, "ssssssssss", $filename, $userId, $itemName, $condition, $storage, $ram, $sim, $description, $processor, $color);
+
+            // Execute the statement
+            $result = mysqli_stmt_execute($stmt);
+
+            // Check for SQL errors
+            if ($result) {
+                echo $successful;
+            } else {
+                echo $failed;
+            }
+
+            // Close the statement
+            mysqli_stmt_close($stmt);
         } else {
-            // Move the uploaded file to the destination directory
-            // if (move_uploaded_file($tempfile, $folder)) {
-                // Use prepared statements to prevent SQL injection
-                $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Condition`, `Storage`, `Ram`, `Sim`, `Description`,`Processor`,`Color`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                $stmt = mysqli_prepare($con, $sql);
-
-                // Bind parameters
-                mysqli_stmt_bind_param($stmt, "ssssssssss", $filename, $userId, $itemName, $condition, $storage, $ram, $sim, $description, $processor, $color);
-
-                // Execute the statement
-                $result = mysqli_stmt_execute($stmt);
-
-                // Check for SQL errors
-                if ($result) {
-                    echo $successful;
-                } else {
-                    echo $failed;
-                }
-
-                // Close the statement
-                mysqli_stmt_close($stmt);
-            // } else {
-            //     echo '<script>alert("Error moving uploaded file")</script>';
-            // }
+            echo '<script>alert("Error moving uploaded file")</script>';
         }
     }
+}
     if (isset($_POST['tablets'])) {
         $userId = $_SESSION['mtid'];
         $itemName = $_POST['ItemName'];
@@ -84,25 +92,25 @@ if (strlen($_SESSION['mtid'] == 0)) {
         } else {
             // Move the uploaded file to the destination directory
             // if (move_uploaded_file($tempfile, $folder)) {
-                // Use prepared statements to prevent SQL injection
-                $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Condition`, `Storage`, `Ram`, `Description`,`Color`,`Size`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                $stmt = mysqli_prepare($con, $sql);
+            // Use prepared statements to prevent SQL injection
+            $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Condition`, `Storage`, `Ram`, `Description`,`Color`,`Size`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($con, $sql);
 
-                // Bind parameters
-                mysqli_stmt_bind_param($stmt, "sssssssss", $filename, $userId, $itemName, $condition, $storage, $ram, $description, $color, $size);
+            // Bind parameters
+            mysqli_stmt_bind_param($stmt, "sssssssss", $filename, $userId, $itemName, $condition, $storage, $ram, $description, $color, $size);
 
-                // Execute the statement
-                $result = mysqli_stmt_execute($stmt);
+            // Execute the statement
+            $result = mysqli_stmt_execute($stmt);
 
-                // Check for SQL errors
-                if ($result) {
-                    echo $successful;
-                } else {
-                    echo $failed;
-                }
+            // Check for SQL errors
+            if ($result) {
+                echo $successful;
+            } else {
+                echo $failed;
+            }
 
-                // Close the statement
-                mysqli_stmt_close($stmt);
+            // Close the statement
+            mysqli_stmt_close($stmt);
             // } else {
             //     echo '<script>alert("Error moving uploaded file")</script>';
             // }
@@ -126,25 +134,25 @@ if (strlen($_SESSION['mtid'] == 0)) {
         } else {
             // Move the uploaded file to the destination directory
             // if (move_uploaded_file($tempfile, $folder)) {
-                // Use prepared statements to prevent SQL injection
-                $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Condition`, `Description`,`Color`,`Size`) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
-                $stmt = mysqli_prepare($con, $sql);
+            // Use prepared statements to prevent SQL injection
+            $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Condition`, `Description`,`Color`,`Size`) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($con, $sql);
 
-                // Bind parameters
-                mysqli_stmt_bind_param($stmt, "sssssss", $filename, $userId, $itemName, $condition, $description, $color, $size);
+            // Bind parameters
+            mysqli_stmt_bind_param($stmt, "sssssss", $filename, $userId, $itemName, $condition, $description, $color, $size);
 
-                // Execute the statement
-                $result = mysqli_stmt_execute($stmt);
+            // Execute the statement
+            $result = mysqli_stmt_execute($stmt);
 
-                // Check for SQL errors
-                if ($result) {
-                    echo $successful;
-                } else {
-                    echo $failed;
-                }
+            // Check for SQL errors
+            if ($result) {
+                echo $successful;
+            } else {
+                echo $failed;
+            }
 
-                // Close the statement
-                mysqli_stmt_close($stmt);
+            // Close the statement
+            mysqli_stmt_close($stmt);
             // } else {
             //     echo '<script>alert("Error moving uploaded file")</script>';
             // }
@@ -159,36 +167,36 @@ if (strlen($_SESSION['mtid'] == 0)) {
 
         $filename = $_FILES["choosefile"]["name"];
         $tempfile = $_FILES["choosefile"]["tmp_name"];
-        $folder = "images/" . $filename;
+        $folder = "../images/" . $filename;
 
         // Check for required fields
         if (empty($itemName) || empty($color) || empty($size)) {
             echo '<script>alert("Required fields are not filled");</script>';
         } else {
             // Move the uploaded file to the destination directory
-            // if (move_uploaded_file($tempfile, $folder)) {
-                // Use prepared statements to prevent SQL injection
-                $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Description`,`Color`,`Size`) VALUES ( ?, ?, ?, ?, ?, ?)";
-                $stmt = mysqli_prepare($con, $sql);
+            if (move_uploaded_file($tempfile, $folder)) {
+            // Use prepared statements to prevent SQL injection
+            $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Description`,`Color`,`Size`) VALUES ( ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($con, $sql);
 
-                // Bind parameters
-                mysqli_stmt_bind_param($stmt, "ssssss", $filename, $userId, $itemName, $description, $color, $size);
+            // Bind parameters
+            mysqli_stmt_bind_param($stmt, "ssssss", $filename, $userId, $itemName, $description, $color, $size);
 
-                // Execute the statement
-                $result = mysqli_stmt_execute($stmt);
+            // Execute the statement
+            $result = mysqli_stmt_execute($stmt);
 
-                // Check for SQL errors
-                if ($result) {
-                    echo $successful;
-                } else {
-                    echo $failed;
-                }
+            // Check for SQL errors
+            if ($result) {
+                echo $successful;
+            } else {
+                echo $failed;
+            }
 
-                // Close the statement
-                mysqli_stmt_close($stmt);
-            // } else {
-            //     echo '<script>alert("Error moving uploaded file")</script>';
-            // }
+            // Close the statement
+            mysqli_stmt_close($stmt);
+            } else {
+                echo '<script>alert("Error moving uploaded file")</script>';
+            }
         }
     }
     if (isset($_POST['headset'])) {
@@ -208,25 +216,25 @@ if (strlen($_SESSION['mtid'] == 0)) {
         } else {
             // Move the uploaded file to the destination directory
             // if (move_uploaded_file($tempfile, $folder)) {
-                // Use prepared statements to prevent SQL injection
-                $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Description`,`Color`, `Type`) VALUES ( ?, ?, ?, ?, ?, ?)";
-                $stmt = mysqli_prepare($con, $sql);
+            // Use prepared statements to prevent SQL injection
+            $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Description`,`Color`, `Type`) VALUES ( ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($con, $sql);
 
-                // Bind parameters
-                mysqli_stmt_bind_param($stmt, "ssssss", $filename, $userId, $itemName, $description, $color, $type);
+            // Bind parameters
+            mysqli_stmt_bind_param($stmt, "ssssss", $filename, $userId, $itemName, $description, $color, $type);
 
-                // Execute the statement
-                $result = mysqli_stmt_execute($stmt);
+            // Execute the statement
+            $result = mysqli_stmt_execute($stmt);
 
-                // Check for SQL errors
-                if ($result) {
-                    echo $successful;
-                } else {
-                    echo $failed;
-                }
+            // Check for SQL errors
+            if ($result) {
+                echo $successful;
+            } else {
+                echo $failed;
+            }
 
-                // Close the statement
-                mysqli_stmt_close($stmt);
+            // Close the statement
+            mysqli_stmt_close($stmt);
             // } else {
             //     echo '<script>alert("Error moving uploaded file")</script>';
             // }
@@ -249,25 +257,25 @@ if (strlen($_SESSION['mtid'] == 0)) {
         } else {
             // Move the uploaded file to the destination directory
             // if (move_uploaded_file($tempfile, $folder)) {
-                // Use prepared statements to prevent SQL injection
-                $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`,`Description`,`Color`) VALUES ( ?, ?, ?, ?, ?)";
-                $stmt = mysqli_prepare($con, $sql);
+            // Use prepared statements to prevent SQL injection
+            $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`,`Description`,`Color`) VALUES ( ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($con, $sql);
 
-                // Bind parameters
-                mysqli_stmt_bind_param($stmt, "sssss", $filename, $userId, $itemName, $description, $color);
+            // Bind parameters
+            mysqli_stmt_bind_param($stmt, "sssss", $filename, $userId, $itemName, $description, $color);
 
-                // Execute the statement
-                $result = mysqli_stmt_execute($stmt);
+            // Execute the statement
+            $result = mysqli_stmt_execute($stmt);
 
-                // Check for SQL errors
-                if ($result) {
-                    echo $successful;
-                } else {
-                    echo $failed;
-                }
+            // Check for SQL errors
+            if ($result) {
+                echo $successful;
+            } else {
+                echo $failed;
+            }
 
-                // Close the statement
-                mysqli_stmt_close($stmt);
+            // Close the statement
+            mysqli_stmt_close($stmt);
             // } else {
             //     echo '<script>alert("Error moving uploaded file")</script>';
             // }
@@ -291,25 +299,25 @@ if (strlen($_SESSION['mtid'] == 0)) {
         } else {
             // Move the uploaded file to the destination directory
             // if (move_uploaded_file($tempfile, $folder)) {
-                // Use prepared statements to prevent SQL injection
-                $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Description`,`Color`,`Type`,`Capacity`) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
-                $stmt = mysqli_prepare($con, $sql);
+            // Use prepared statements to prevent SQL injection
+            $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Description`,`Color`,`Type`,`Capacity`) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($con, $sql);
 
-                // Bind parameters
-                mysqli_stmt_bind_param($stmt, "sssssss", $filename, $userId, $itemName, $description, $color, $type, $capacity);
+            // Bind parameters
+            mysqli_stmt_bind_param($stmt, "sssssss", $filename, $userId, $itemName, $description, $color, $type, $capacity);
 
-                // Execute the statement
-                $result = mysqli_stmt_execute($stmt);
+            // Execute the statement
+            $result = mysqli_stmt_execute($stmt);
 
-                // Check for SQL errors
-                if ($result) {
-                    echo $successful;
-                } else {
-                    echo $failed;
-                }
+            // Check for SQL errors
+            if ($result) {
+                echo $successful;
+            } else {
+                echo $failed;
+            }
 
-                // Close the statement
-                mysqli_stmt_close($stmt);
+            // Close the statement
+            mysqli_stmt_close($stmt);
             // } else {
             //     echo '<script>alert("Error moving uploaded file")</script>';
             // }
@@ -332,25 +340,25 @@ if (strlen($_SESSION['mtid'] == 0)) {
         } else {
             // Move the uploaded file to the destination directory
             // if (move_uploaded_file($tempfile, $folder)) {
-                // Use prepared statements to prevent SQL injection
-                $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Description`,`Type`,`Size`) VALUES ( ?, ?, ?, ?, ?, ?)";
-                $stmt = mysqli_prepare($con, $sql);
+            // Use prepared statements to prevent SQL injection
+            $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Description`,`Type`,`Size`) VALUES ( ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($con, $sql);
 
-                // Bind parameters
-                mysqli_stmt_bind_param($stmt, "ssssss", $filename, $userId, $itemName, $description, $type, $size);
+            // Bind parameters
+            mysqli_stmt_bind_param($stmt, "ssssss", $filename, $userId, $itemName, $description, $type, $size);
 
-                // Execute the statement
-                $result = mysqli_stmt_execute($stmt);
+            // Execute the statement
+            $result = mysqli_stmt_execute($stmt);
 
-                // Check for SQL errors
-                if ($result) {
-                    echo $successful;
-                } else {
-                    echo $failed;
-                }
+            // Check for SQL errors
+            if ($result) {
+                echo $successful;
+            } else {
+                echo $failed;
+            }
 
-                // Close the statement
-                mysqli_stmt_close($stmt);
+            // Close the statement
+            mysqli_stmt_close($stmt);
             // } else {
             //     echo '<script>alert("Error Uploading Image")</script>';
             // }
@@ -373,25 +381,25 @@ if (strlen($_SESSION['mtid'] == 0)) {
         } else {
             // Move the uploaded file to the destination directory
             // if (move_uploaded_file($tempfile, $folder)) {
-                // Use prepared statements to prevent SQL injection
-                $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Description`,`Size`,`Type`) VALUES ( ?, ?, ?, ?, ?, ?)";
-                $stmt = mysqli_prepare($con, $sql);
+            // Use prepared statements to prevent SQL injection
+            $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Description`,`Size`,`Type`) VALUES ( ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($con, $sql);
 
-                // Bind parameters
-                mysqli_stmt_bind_param($stmt, "ssssss", $filename, $userId, $itemName, $description, $size, $type);
+            // Bind parameters
+            mysqli_stmt_bind_param($stmt, "ssssss", $filename, $userId, $itemName, $description, $size, $type);
 
-                // Execute the statement
-                $result = mysqli_stmt_execute($stmt);
+            // Execute the statement
+            $result = mysqli_stmt_execute($stmt);
 
-                // Check for SQL errors
-                if ($result) {
-                    echo $successful;
-                } else {
-                    echo $failed;
-                }
+            // Check for SQL errors
+            if ($result) {
+                echo $successful;
+            } else {
+                echo $failed;
+            }
 
-                // Close the statement
-                mysqli_stmt_close($stmt);
+            // Close the statement
+            mysqli_stmt_close($stmt);
             // } else {
             //     echo '<script>alert("Error moving uploaded file")</script>';
             // }
@@ -415,25 +423,25 @@ if (strlen($_SESSION['mtid'] == 0)) {
         } else {
             // Move the uploaded file to the destination directory
             // if (move_uploaded_file($tempfile, $folder)) {
-                // Use prepared statements to prevent SQL injection
-                $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Description`,`Color`,`Size`,`Usage`) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
-                $stmt = mysqli_prepare($con, $sql);
+            // Use prepared statements to prevent SQL injection
+            $sql = "INSERT INTO `items`(`Image`, `userId`, `ItemName`, `Description`,`Color`,`Size`,`Usage`) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($con, $sql);
 
-                // Bind parameters
-                mysqli_stmt_bind_param($stmt, "sssssss", $filename, $userId, $itemName, $description, $itemColor, $itemSize, $itemUsage);
+            // Bind parameters
+            mysqli_stmt_bind_param($stmt, "sssssss", $filename, $userId, $itemName, $description, $itemColor, $itemSize, $itemUsage);
 
-                // Execute the statement
-                $result = mysqli_stmt_execute($stmt);
+            // Execute the statement
+            $result = mysqli_stmt_execute($stmt);
 
-                // Check for SQL errors
-                if ($result) {
-                    echo $successful;
-                } else {
-                    echo $failed;
-                }
+            // Check for SQL errors
+            if ($result) {
+                echo $successful;
+            } else {
+                echo $failed;
+            }
 
-                // Close the statement
-                mysqli_stmt_close($stmt);
+            // Close the statement
+            mysqli_stmt_close($stmt);
             // } else {
             //     echo '<script>alert("Error moving uploaded file")</script>';
             // }
@@ -803,14 +811,14 @@ if (strlen($_SESSION['mtid'] == 0)) {
                             <div class="card-body">
                                 <form method="post" action="dashboard.php" class="form-control" enctype="multipart/form-data" style="text-decoration: none; border:none;">
                                     <div class="d-inline-block w-50%">
-                                    <input class="form-control mb-2" type="text" placeholder="Model *" name="ItemName" required>
+                                        <input class="form-control mb-2" type="text" placeholder="Model *" name="ItemName" required>
                                         <select class="form-select mb-2" name="Type" id="" placeholder='Type' required>
                                             <option value="" selected disabled hidden>Type *</option>
                                             <option value="Selfie Stick">Selfie Stick</option>
                                             <option value="Stabilizer">Stabilizer</option>
                                             <option value="phone holder">Phone holder</option>
                                         </select>
-                                        <input class="form-control mb-2" type="text" placeholder="Size" name="Size" >
+                                        <input class="form-control mb-2" type="text" placeholder="Size" name="Size">
                                         <textarea class="form-control mb-2" type="text" placeholder="Description" name="Description"></textarea>
                                         <lable for="choosefile">Image (Recommended)</lable>
                                         <input class="form-control" type="file" name="choosefile" id="choosefile">

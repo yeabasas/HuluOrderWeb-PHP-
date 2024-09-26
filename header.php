@@ -4,62 +4,68 @@ $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
 <nav class="nav text-white">
-    <div class="group-parent">
-        <a href="index.php" style="text-decoration: none; color:#fff;">
-        <div class="vector-parent">
-            <img class="vector-icon1" alt="" src="./public/vector1.svg" />
-
-            <img class="vector-icon2" alt="" src="./public/vector2.svg" />
-
-            <div class="hulu">Hulu</div>
-            <img class="vector-icon3" alt="" src="./public/vector3.svg" />
-
-            <img class="vector-icon4" alt="" src="./public/vector4.svg" />
-
-            <img class="vector-icon5" alt="" src="./public/vector5.svg" />
-
-            <img class="vector-icon6" alt="" src="./public/vector6.svg" />
-
-            <img class="vector-icon7" alt="" src="./public/vector7.svg" />
-
-            <img class="vector-icon8" alt="" src="./public/vector8.svg" />
-
-            <img class="vector-icon9" alt="" src="./public/vector9.svg" />
-
-            <img class="vector-icon10" alt="" src="./public/vector10.svg" />
-
-            <img class="vector-icon11" alt="" src="./public/vector11.svg" />
-
-            <img class="vector-icon12" alt="" src="./public/vector12.svg" />
-
-            <img class="vector-icon13" alt="" src="./public/vector10.svg" />
-
-            <img class="vector-icon14" alt="" src="./public/vector13.svg" />
-
-            <img class="vector-icon15" alt="" src="./public/vector14.svg" />
-
-            <img class="vector-icon16" alt="" src="./public/vector15.svg" />
+    <a href="index.php" style="text-decoration: none; color:#fff; display:'flex';flex-direction:'row';">
+        <div class="logo-con">
+            <div class="logo">
+                <img alt="" src="./images/1122.png" height="50px" width="50px" />
+            </div>
+            <div class="logos">
+                <h2 class="order">Hulu</h2>
+                <p class="order">Order</p>
+            </div>
         </div>
-        <div class="order">ORDER</div>
-        </a>
+    </a>
+    <div class="menu-toggle">
+        <input type="checkbox" id="click">
+        <label for="click" class="menu-btn">
+            <i class="fas fa-bars"></i>
+        </label>
+        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" id="navbarDarkDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <?php
+                        $ufId = $_SESSION['mtid'];
+                        $queryy = mysqli_query($con, "select * from user where ID = '$ufId'");
+                        while ($feedFetch = mysqli_fetch_array($queryy)) {
+                        ?>
+                            <div class="d-flex flex-row align-center justify-items-center">
+                                <?php
+                                $postId = $feedFetch['ID'];
+                                $sqlImages = "SELECT image_filename FROM user_images WHERE userId = ?";
+                                $stmtImages = mysqli_prepare($con, $sqlImages);
+                                mysqli_stmt_bind_param($stmtImages, "i", $postId);
+                                mysqli_stmt_execute($stmtImages);
+                                $resultImages = mysqli_stmt_get_result($stmtImages);
+                                if ($rowImage = mysqli_fetch_assoc($resultImages)) {
+                                    $imageFilename = $rowImage['image_filename'];
+                                    echo '<img src="imageUpload.php?filename=' . $imageFilename . '" alt="" width="40" height="40" style="border-radius: 50%;">';
+                                }
+                                mysqli_stmt_close($stmtImages);
+                                ?>
+                                <!--<img src="imageUpload.php?filename=' . $imageFilename . '" alt="" width="40" height="40" style="border-radius: 50%;">-->
+                                <div>
+                                    <p class="align-middle mx-2 m-0" style="color: gray;"><?php echo $feedFetch["FirstName"] ?> <?php echo $feedFetch["LastName"] ?></p>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </a>
+                    <?php if (strlen($_SESSION['mtid'] == 0)) { ?>
+                        <a class="nav-link mx-2 m-0" style="color: white; font-weight: 600; font-size: large;" href="login.php">Login</a>
+                    <?php } ?>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <?php if (strlen($_SESSION['mtid'] > 0)) { ?>
+                            <li><a class="dropdown-item" <?php if ($current_page == 'index.php') echo 'class="active"'; ?> href="index.php">Home</a></li>
+                            <li><a class="dropdown-item" <?php if ($current_page == 'dashboard.php') echo 'class="active"'; ?> href="dashboard.php">Order</a></li>
+                            <li><a class="dropdown-item" <?php if ($current_page == 'message.php') echo 'class="active"'; ?> href="message.php">Message</a></li>
+                            <li><a class="dropdown-item" <?php if ($current_page == 'history.php') echo 'class="active"'; ?> href="history.php">History</a></li>
+                            <li><a class="dropdown-item" <?php if ($current_page == 'profile.php') echo 'class="active"'; ?> href="profile.php">Profile</a></li>
+                            <li><a class="dropdown-item" <?php if ($current_page == 'verify.php') echo 'class="active"'; ?> href="verify.php">Verify</a></li>
+                            <li><a class="dropdown-item" <?php if ($current_page == 'logout.php') echo 'class="active"'; ?> href="logout.php">Logout</a></li>
+                        <?php } ?>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
-    <input type="checkbox" id="click">
-    <label for="click" class="menu-btn">
-        <i class="fas fa-bars"></i>
-    </label>
-    <ul>
-        <?php if (strlen($_SESSION['mtid'] == 0)) { ?>
-            <li><a <?php if ($current_page == 'login.php') echo 'class="active"'; ?> href="login.php">Login</a></li>
-        <?php } ?>
-        <?php if (strlen($_SESSION['mtid'] > 0)) { ?>
-            <li><a <?php if ($current_page == 'index.php') echo 'class="active"'; ?> href="index.php">Home</a></li>
-            <li><a <?php if ($current_page == 'dashboard.php') echo 'class="active"'; ?> href="dashboard.php">Order</a></li>
-            <li><a <?php if ($current_page == 'message.php') echo 'class="active"'; ?> href="message.php">Message</a></li>
-            <!-- <li><a <?php if ($current_page == 'unlock.php') echo 'class="active"'; ?> href="unlock.php">Unlock</a></li> -->
-            <!-- <li><a <?php if ($current_page == 'stoke.php') echo 'class="active"'; ?> href="stoke.php">Stoke</a></li> -->
-            <li><a <?php if ($current_page == 'history.php') echo 'class="active"'; ?> href="history.php">History</a></li>
-            <li><a <?php if ($current_page == 'profile.php') echo 'class="active"'; ?> href="profile.php">Profile</a></li>
-            <li><a <?php if ($current_page == 'logout.php') echo 'class="active"'; ?> href="logout.php">Logout</a></li>
-        <?php } ?>
-    </ul>
 </nav>
